@@ -64,7 +64,8 @@ res = speedmapping(x0; m! = (xout, xin) -> power_iteration!(xout, xin, A), algo 
 # This can be done by supplying an objective function (assumed to be a minimization problem) using 
 # `f` as keyword argument. Here is an illustrative
 # [EM-algorithm](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm) 
-# example from [Hasselblad (1969)](https://www.tandfonline.com/doi/abs/10.1080/01621459.1969.10501071).
+# example from [Hasselblad (1969)](https://www.tandfonline.com/doi/abs/10.1080/01621459.1969.10501071)
+# estimating a mixture of exponential distributions.
 
 function neg_log_likelihood(x)
     freq = (162, 267, 271, 185, 111, 61, 27, 8, 3, 1)
@@ -100,23 +101,24 @@ end
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa);
 display(res_with_objective)
 
-# Note that the domain of (p, μ₁, μ₂) should be restricted since $1 < p < 1$ is a probability (and 
-# we hope to avoid the degenerate values p = 0 or p = 1), and $μ₁, μ₂ > 0$ are the inverse scales of 
-# exponential distributions. This can be communicated efortlessly to SpeedMapping by adding bounds:
+# Note that something we didn't consider is that the domain of $(p, μ₁, μ₂)$ should be restricted 
+# since $1 < p < 1$ is a probability (hopefully not the degenerate values $p = 0$ or $p = 1$), and 
+# $μ₁, μ₂ > 0$ are the inverse scales of exponential distributions. This can be communicated 
+# effortlessly to SpeedMapping by adding bounds:
 
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa,
     lower = [0.,0.,0.], upper = [1., Inf, Inf], buffer = 0.05);
-display(res_with_objective)
 
 # Here, the keyword argument `buffer` (= 0.05 by default for **P1**) ensures that a parameter will 
-# be within $0.05 * |$x_last$ - $bound$|$ of the boundary, where x_last is a parameter's last value. 
-# This avoids jumping to $p = 0$ or $p = 1$ instantly. For example, if $p_last = 0.2$ and 
-# p_try $= -0.05$ (AA's next iterate), $p = 0.05 *$ p_last $+ (1 - 0.05) *$ bound $= 0.05 * 0.2 + 0.95 * 0. = 0.01$.
+# be at minimum at a distance 0.05 × |x_last - bound| of the boundary, where x_last is a parameter's 
+# last value. This safeguard avoids jumping to the bounds instantly (unless buffer = 0). For 
+# instance, if p_last = 0.2 and p_try = -0.05 (AA's next iterate), then 
+# p = buffer × p_last + (1 - buffer) × lower_bound = 0.05 * 0.2 + 0.95 * 0. = 0.01.
 #
 # ## Avoiding memory allocation
 #
-# For similar problems solved many times, it is possible to preallocate working 
-# memory and feed it using the `cache` keyword argument. Each algorithm has its own cache:
+# For similar problems solved many times, it is possible to preallocate working memory and feed it 
+# using the `cache` keyword argument. Each algorithm has its own cache:
 
 acx_cache = AcxCache(x0);
 aa_cache = AaCache(x0);
@@ -129,13 +131,13 @@ aa_cache = AaCache(x0);
 using StaticArrays
 
 function power_iteration(xin, A)
-    xout = A * xin;
-    maxabs = 0.;
+    xout = A * xin
+    maxabs = 0.
     for xi in xout
         abs(xi) > maxabs && (maxabs = abs(xi))
-    end;
+    end
     return xout / maxabs;
-end;
+end
 
 As = @SMatrix ones(n,n);
 As += Diagonal(1:n);
@@ -189,7 +191,8 @@ function g_Rosenbrock!(grad, x) # Rosenbrock gradient
 	grad[2] = -200 * (x[1]^2 - x[2]);
 end
 
-speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!)
+res_optim = speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!);
+display(res_optim)
 
 # The function objective is only used to compute a safer initial learning rate. It can be omitted.
 speedmapping([-1.2, 1.]; g! = g_Rosenbrock!);
@@ -220,4 +223,3 @@ display(res_scalar)
 
 speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!, lower = [2, -Inf]);
 speedmapping(0.; g = x -> exp(x) + 2x, upper = -1.);
-
