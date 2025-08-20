@@ -100,6 +100,19 @@ end
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa);
 display(res_with_objective)
 
+# Note that the domain of (p, μ₁, μ₂) should be restricted since $1 < p < 1$ is a probability (and 
+# we hope to avoid the degenerate values p = 0 or p = 1), and $μ₁, μ₂ > 0$ are the inverse scales of 
+# exponential distributions. This can be communicated efortlessly to SpeedMapping by adding bounds:
+
+res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa,
+    lower = [0.,0.,0.], upper = [1., Inf, Inf], buffer = 0.05);
+display(res_with_objective)
+
+# Here, the keyword argument `buffer` (= 0.05 by default for **P1**) ensures that a parameter will 
+# be within $0.05 * |$x_last$ - $bound$|$ of the boundary, where x_last is a parameter's last value. 
+# This avoids jumping to $p = 0$ or $p = 1$ instantly. For example, if $p_last = 0.2$ and 
+# p_try $= -0.05$ (AA's next iterate), $p = 0.05 *$ p_last $+ (1 - 0.05) *$ bound $= 0.05 * 0.2 + 0.95 * 0. = 0.01$.
+#
 # ## Avoiding memory allocation
 #
 # For similar problems solved many times, it is possible to preallocate working 
@@ -108,11 +121,10 @@ display(res_with_objective)
 acx_cache = AcxCache(x0);
 aa_cache = AaCache(x0);
 
-# Note that ``x0`` must still be supplied to speedmapping.
+# Note that `x0` must still be supplied to speedmapping.
 
 # For small-sized problems with **ACX**, heap-allocation can be avoided by supplying a static array 
-# or a tuple as starting point and using the keyword argument `m` for the mapping function, offering 
-# additional speed gains.
+# as starting point and using the keyword argument `m` for the mapping function:
 
 using StaticArrays
 
@@ -149,7 +161,7 @@ return hcat(["eigen", "Allocating", "Pre-allocated", "Non allocating"],times)
 speedmapping(0.5; m = cos);
 speedmapping((0.5, 0.5); m = x -> (cos(x[1]), sin(x[2])));
 
-# # Solving non linear systems of equations
+# # Solving non-linear systems of equations
 #
 # For non-linear systems of equations (finding $x^*$ such that $G(x^*) = 0$), only **AA** with 
 # constant relaxation should be used (and is set by default). The keyword argument to supply $G$ is 
@@ -160,7 +172,8 @@ function r!(resid, x)
 	resid[2] = (x[2] + x[1])^3;
 end
 
-speedmapping([1.,2.]; r! = r!);
+res_nl = speedmapping([1.,2.]; r! = r!);
+display(res_nl)
 
 # # Minimizing a function
 
@@ -176,7 +189,7 @@ function g_Rosenbrock!(grad, x) # Rosenbrock gradient
 	grad[2] = -200 * (x[1]^2 - x[2]);
 end
 
-display(speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!))
+speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!)
 
 # The function objective is only used to compute a safer initial learning rate. It can be omitted.
 speedmapping([-1.2, 1.]; g! = g_Rosenbrock!);
@@ -201,7 +214,7 @@ display(res_scalar)
 # ## Adding box constraint
 # 
 # An advantage of **ACX** is that constraints on parameters have little impact on estimation speed. 
-# They are added with the keyword arguments `lower` and `upper` (`= nothing` by default). The 
+# They are added via the keyword arguments `lower` and `upper` (`= nothing` by default). The 
 # starting point does not need to be in the feasible domain, but, if supplied, upper / lower _need
 # to be of type x0_.
 
