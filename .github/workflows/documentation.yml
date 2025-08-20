@@ -28,7 +28,6 @@ jobs:
         shell: julia --color=yes --project=docs -e '
           using Pkg
 		  Pkg.add(url = "https://github.com/NicolasL-S/SpeedMapping.jl")
-		  using SpeedMapping
           Pkg.develop(PackageSpec(path=pwd()))
           Pkg.instantiate()'
       - name: Build and deploy
