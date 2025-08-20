@@ -63,7 +63,6 @@ jobs:
         shell: julia --project=docs --color=yes {0}
         run: |
           using Pkg
-    		  Pkg.add(url = "https://github.com/NicolasL-S/SpeedMapping.jl")
           Pkg.develop(PackageSpec(path=pwd()))
           Pkg.instantiate()
       - uses: julia-actions/julia-buildpkg@v1
@@ -76,6 +75,5 @@ jobs:
         run: |
           using Documenter: DocMeta, doctest
           using SpeedMappingDeployDoc
-          using SpeedMapping
           DocMeta.setdocmeta!(SpeedMappingDeployDoc, :DocTestSetup, :(using SpeedMappingDeployDoc); recursive=true)
           doctest(SpeedMappingDeployDoc)
