@@ -1,3 +1,5 @@
+using SpeedMapping
+
 ```@docs
 SpeedMapping
 ```
