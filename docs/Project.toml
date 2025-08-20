@@ -8,3 +8,6 @@ SpeedMapping = "f1835b91-879b-4a3f-a438-e4baacf14412"
 SpeedMappingDeployDoc = "cb8b4586-0954-4c43-90e9-ca189c5b9626"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
+[compat]
+SpeedMapping = "0.5.0"
