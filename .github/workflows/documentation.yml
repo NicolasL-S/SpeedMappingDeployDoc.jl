@@ -26,10 +26,11 @@ jobs:
       - uses: julia-actions/cache@v2
       - name: Install dependencies
         shell: julia --color=yes --project=docs -e '
+        run: |
           using Pkg
 		  Pkg.add(url = "https://github.com/NicolasL-S/SpeedMapping.jl")
           Pkg.develop(PackageSpec(path=pwd()))
-          Pkg.instantiate()'
+          Pkg.instantiate()
       - name: Build and deploy
         run: julia --color=yes --project=docs docs/make.jl
         env:
