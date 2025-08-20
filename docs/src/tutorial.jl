@@ -131,13 +131,13 @@ aa_cache = AaCache(x0);
 using StaticArrays
 
 function power_iteration(xin, A)
-    xout = A * xin;
-    maxabs = 0.;
+    xout = A * xin
+    maxabs = 0.
     for xi in xout
         abs(xi) > maxabs && (maxabs = abs(xi))
-    end;
+    end
     return xout / maxabs;
-end;
+end
 
 As = @SMatrix ones(n,n);
 As += Diagonal(1:n);
@@ -191,7 +191,8 @@ function g_Rosenbrock!(grad, x) # Rosenbrock gradient
 	grad[2] = -200 * (x[1]^2 - x[2]);
 end
 
-speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!)
+res_optim = speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!);
+display(res_optim)
 
 # The function objective is only used to compute a safer initial learning rate. It can be omitted.
 speedmapping([-1.2, 1.]; g! = g_Rosenbrock!);
