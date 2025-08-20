@@ -5,4 +5,4 @@
 [![Build Status](https://github.com/NicolasL-S/SpeedMappingDeployDoc.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/NicolasL-S/SpeedMappingDeployDoc.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/NicolasL-S/SpeedMappingDeployDoc.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/NicolasL-S/SpeedMappingDeployDoc.jl)
 
-A readme for SpeedMappingDeployDoc
+This package only serves to deploy the documentation for [SpeedMapping.jl](https://github.com/NicolasL-S/SpeedMapping.jl)
