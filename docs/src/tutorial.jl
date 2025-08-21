@@ -49,8 +49,8 @@ display(res_aa)
 
 # By default, **AA** uses [adaptive relaxation](https://arxiv.org/abs/2408.16920), which can 
 # reduce the number of iterations. It is specified by the keyword argument 
-# `adarelax = :minimum_distance`. For constant relaxation, set `adarelax = :none`.
-res = speedmapping(x0; m! = (xout, xin) -> power_iteration!(xout, xin, A), algo = :aa, adarelax = :none);
+# `ada_relax = :minimum_distance`. For constant relaxation, set `ada_relax = :none`.
+res = speedmapping(x0; m! = (xout, xin) -> power_iteration!(xout, xin, A), algo = :aa, ada_relax = :none);
 
 # Another recent development for **AA** is **Composite AA** by [Chen and Vuik, 2022](https://onlinelibrary.wiley.com/doi/abs/10.1002/nme.7096).
 # A one-step **AA** iteration (using 2 maps) is inserted between 2 full **AA** steps, which reduces 
