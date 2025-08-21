@@ -1,8 +1,8 @@
 # ## Tutorial
 # `speedmapping(x0; kwargs...)`  solves three types of problems:
-# 1. [Accelerating convergent mapping iterations](#Accelerate-convergent-mapping-iterations)
-# 2. [Solving non-linear systems of equations](#Solve-non-linear-systems-of-equations)
-# 3. [Minimizing a function, possibly with box constraints](#Minimize-a-function)
+# 1. [Accelerating convergent mapping iterations](#Accelerating-convergent-mapping-iterations)
+# 2. [Solving non-linear systems of equations](#Solving-non-linear-systems-of-equations)
+# 3. [Minimizing a function, possibly with box constraints](#Minimizing-a-function)
 #
 # using two algorithms:
 # - Alternating cyclic extrapolations (**ACX**) [Lepage-Saucier, 2024](https://www.sciencedirect.com/science/article/abs/pii/S0377042723005514)
@@ -13,7 +13,7 @@
 # may be more performant for your problem, the **Benchmarks** section compares all of them, along 
 # with other Julia packages with similar functionalities.
 #
-# ## Accelerating convergent mapping iterations
+# # Accelerating convergent mapping iterations
 #
 # Let's find the dominant eigenvalue of a matrix $A$ using the accelerated [Power iteration](https://en.wikipedia.org/wiki/Power_iteration).
 
