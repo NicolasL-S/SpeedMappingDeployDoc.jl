@@ -38,7 +38,7 @@ using StaticArrays
 speedmapping(1.; m = x -> 0.9x)
 speedmapping(SA[1.,1.]; m = x -> 0.9x)
 speedmapping(1.; g = x -> 4x^3)
-speedmapping((2.,2.); g = x -> (x[1] - 2, x[2].^3))
+speedmapping((1.,1.); g = x -> (x[1] - 2, x[2]^3))
 
 ```
 ## Other important keyword arguments
