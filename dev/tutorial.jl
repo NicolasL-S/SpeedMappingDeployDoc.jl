@@ -7,7 +7,6 @@
 # using two algorithms:
 # - Alternating cyclic extrapolations (**ACX**) [Lepage-Saucier, 2024](https://www.sciencedirect.com/science/article/abs/pii/S0377042723005514)
 # - Anderson Acceleration (**AA**) [Anderson, 1964](https://dl.acm.org/doi/10.1145/321296.321305)
-
 #
 # This tutorial will display its main functionality on simple problems. To see which specification 
 # may be more performant for your problem, the **Benchmarks** section compares all of them, along 
