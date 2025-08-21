@@ -80,7 +80,7 @@ speedmapping([1.,1.]; g!  =  (grad, x)  -> grad .= 4x.^3, lower = [-Inf,2.])
 `time_limit :: Real  =  Inf`
   The time limit before stopping (if `time_limit == Inf`, `time()` will not be called at each iteration).
 
-`reltol_resid_grow :: Real = algo == :aa ? 4. : (g! !== nothing || g !== nothing) ? 1e5 : 100`
+`reltol_resid_grow :: Real = algo == :aa ? 4. : (g! !== nothing || g !== nothing) ? 1e5 : 100.`
   `reltol_resid_grow` is a problem-specific stabilizing parameter. After a mapping/descent step/iteration, the distance between the current `x` and the previous `x` is reduced until the residual norm (`|xout - xin|`, `|res|`, or `|grad|`) does not increase more than a by a factor `reltol_resid_grow`. It is set to 4 for **AA** because this algorithm is more sensitive to low-quality iterations and because **P2** may involve highly divergent functions. For **ACX** it is set to 100 for **P1**, and for 1e5 for **P3**.
 
 `buffer::  AbstractFloat  = (m! !==  nothing  || m !==  nothing) ?  0.05  :  0.`
