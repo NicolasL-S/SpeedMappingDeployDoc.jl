@@ -114,7 +114,7 @@ res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = E
 
 # Here, the keyword argument `buffer` (= 0.05 by default for mapping applications) ensures that a 
 # parameter xᵢ will be at least at a distance buffer $× |$xᵢprev $-$ boundᵢ$|$ of boundᵢ, where 
-# xᵢprev is xᵢ's previous value. This safeguard avoids jumping to a bound instantly (unless buffer 
+# xᵢprev is xᵢ's previous value. This safeguard avoids jumping to boundᵢ instantly (unless buffer 
 # $= 0$), in case boundᵢ is infeasible or is a saddle point. For instance, if xᵢprev $= 0.2$, lowerᵢ 
 # $= 0$, but AA's next iterate is xᵢtry $= -0.1$, then xᵢ is set to 
 # max$($xᵢtry, buffer $×$ xᵢprev $+ (1 -$ buffer$) ×$ lowerᵢ$) =$ max$(-0.1, 0.05 × 0.2 + 0.95 × 0) = 0.01$.
