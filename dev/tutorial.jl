@@ -101,19 +101,19 @@ end
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa);
 display(res_with_objective)
 
-# Note that something we didn't consider is that the domain of $(p, μ₁, μ₂)$ should be restricted 
-# since $1 < p < 1$ is a probability (hopefully not the degenerate values $p = 0$ or $p = 1$), and 
-# $μ₁, μ₂ > 0$ are the inverse scales of exponential distributions. This can be communicated 
-# effortlessly to SpeedMapping by adding bounds:
+# Note that something we didn't consider the three parameters being estimated $p, μ₁, μ₂$ have 
+# restricted domains. $1 < p < 1$ is a probability (hopefully not the degenerate values $p = 0$ or 
+# $p = 1$), and $μ₁, μ₂ > 0$ are the inverse scales of exponential distributions. This can be 
+# communicated effortlessly to SpeedMapping by adding bounds:
 
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa,
     lower = [0.,0.,0.], upper = [1., Inf, Inf], buffer = 0.05);
 
-# Here, the keyword argument `buffer` (= 0.05 by default for **P1**) ensures that a parameter will 
-# be at minimum at a distance 0.05 × |x_last - bound| of the boundary, where x_last is a parameter's 
-# last value. This safeguard avoids jumping to the bounds instantly (unless buffer = 0). For 
-# instance, if p_last = 0.2 and p_try = -0.05 (AA's next iterate), then 
-# p = buffer × p_last + (1 - buffer) × lower_bound = 0.05 * 0.2 + 0.95 * 0. = 0.01.
+# Here, the keyword argument `buffer` (= 0.05 by default for mapping applications) ensures that a 
+# parameter x will be at least at a distance 0.05 × |x.last - bound| of bound, where x.last is x's 
+# last value. This safeguard avoids jumping to bound instantly (unless buffer = 0). For instance, if 
+# p.last = 0.2, AA's next iterate is p.try = -0.1, and lower = 0, then p is set to 
+# max(p.try, buffer × p.last + (1 - buffer) × lower) = max(-0.1, 0.05 * 0.2 + 0.95 * 0.) = 0.01.
 #
 # ## Avoiding memory allocation
 #
@@ -125,7 +125,7 @@ aa_cache = AaCache(x0);
 
 # Note that `x0` must still be supplied to speedmapping.
 
-# For small-sized problems with **ACX**, heap-allocation can be avoided by supplying a static array 
+# For small-sized problems with **ACX**, heap allocation can be avoided by supplying a static array 
 # as starting point and using the keyword argument `m` for the mapping function:
 
 using StaticArrays
