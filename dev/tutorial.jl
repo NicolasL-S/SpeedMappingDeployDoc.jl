@@ -101,18 +101,19 @@ end
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa);
 display(res_with_objective)
 
-# Note that something we didn't consider the three parameters being estimated $p, μ₁, μ₂$ have 
-# restricted domains. $1 < p < 1$ is a probability (hopefully not the degenerate values $p = 0$ or 
-# $p = 1$), and $μ₁, μ₂ > 0$ are the inverse scales of exponential distributions. This can be 
-# communicated effortlessly to SpeedMapping by adding bounds:
+# Note that the parameters being estimated, $p, μ₁, μ₂$, have restricted domains; $1 < p < 1$ is a 
+# probability (where the degenerate values $p = 0$ and $p = 1$ are hopefully avoided), and 
+# $μ₁, μ₂ > 0$ are the inverse scales of exponential distributions. To avoid the risk that an 
+# iterate falls outside of its domain, bounds can be supplied using the keyword arguments lower and 
+# upper:
 
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa,
     lower = [0.,0.,0.], upper = [1., Inf, Inf], buffer = 0.05);
 
 # Here, the keyword argument `buffer` (= 0.05 by default for mapping applications) ensures that a 
 # parameter x will be at least at a distance 0.05 × |x.last - bound| of bound, where x.last is x's 
-# last value. This safeguard avoids jumping to bound instantly (unless buffer = 0). For instance, if 
-# p.last = 0.2, AA's next iterate is p.try = -0.1, and lower = 0, then p is set to 
+# last value. This safeguard avoids jumping to a bound instantly (unless buffer = 0). For instance, 
+# if p.last = 0.2, AA's next iterate is p.try = -0.1, and lower = 0, then p is set to 
 # max(p.try, buffer × p.last + (1 - buffer) × lower) = max(-0.1, 0.05 * 0.2 + 0.95 * 0.) = 0.01.
 #
 # ## Avoiding memory allocation
@@ -218,8 +219,8 @@ display(res_scalar)
 # 
 # An advantage of **ACX** is that constraints on parameters have little impact on estimation speed. 
 # They are added via the keyword arguments `lower` and `upper` (`= nothing` by default). The 
-# starting point does not need to be in the feasible domain, but, if supplied, upper / lower _need
-# to be of type x0_.
+# starting point does not need to be in the feasible domain, but, if supplied, _upper / lower need
+# to be of type `x0`_.
 
 speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!, lower = [2, -Inf]);
 speedmapping(0.; g = x -> exp(x) + 2x, upper = -1.);
