@@ -31,7 +31,9 @@ makedocs(;
     ]
 )
 
-deploydocs(;
-    repo="github.com/NicolasL-S/SpeedMapping.jl.git", # Deploying on SpeedMapping directly
-    devbranch="main",
-)
+withenv("GITHUB_REPOSITORY" => "NicolasL-S/SpeedMapping.jl") do
+    deploydocs(;
+        repo="github.com/NicolasL-S/SpeedMapping.jl.git", # Deploying on SpeedMapping directly
+        devbranch="main",
+    )
+end
