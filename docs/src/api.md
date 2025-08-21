@@ -1,17 +1,20 @@
 ## Notation
 
-This API will refer to **P1**, **P2** and **P3** to identify the problems:
-1) Accelerating convergent mapping iterations;
-2) Solving a non-linear systems of equations;
-3) Minimizing a function, possibly with box-constraints.
-It will refer to Alternating cyclic extrapolations as **ACX** and Anderson Acceleration as **AA**.
+Problems:
+- **P1**: Accelerating convergent mapping iterations;
+- **P2**: Solving a non-linear systems of equations;
+- **P3**: Minimizing a function, possibly with box-constraints
+
+Algorithms:
+- **ACX**: Alternating cyclic extrapolations
+- **AA**: Anderson Acceleration.
 
 ## speedmapping
 
 `speedmapping(x0; kwargs...) :: SpeedMappingResult`
 
 `x0 :: T` is the starting point and defines the type:
-- For **ACX**: `x0` can be of type `Real` or `Complex` with mutable or immutable containers of different shapes like `AbstractArray`, `StaticArray`, `Scalar`, `Tuple`.
+- For **ACX**: `x0` can be of type `Real` or `Complex` with mutable or immutable containers of different shapes like `AbstractArray`, `StaticArray`, `Real`, or `Tuple`.
 - For **AA**: `x0` should be a mutable `AbstractArray{AbstractFloat}`.
 
 ## Keyword arguments defining the problem
@@ -29,7 +32,7 @@ speedmapping([1.,1.]; r! = (resid, x) -> resid .=  -0.1x)
 ```Julia
 speedmapping([1.,1.]; g! = (grad, x) -> grad .=  4x.^3)
 ```
-`m` and `g` are versions of `m!` and `g!` with immutable types like scalar, `StaticArray`, or `Tuple` as input and output.
+`m` and `g` are versions of `m!` and `g!` with immutable types like `Real', `StaticArray`, or `Tuple` as input and output.
 ```Julia
 using StaticArrays
 speedmapping(1.; m = x -> 0.9x)
