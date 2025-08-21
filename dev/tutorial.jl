@@ -101,20 +101,23 @@ end
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa);
 display(res_with_objective)
 
-# Note that the parameters being estimated, $p, μ₁, μ₂$, have restricted domains; $1 < p < 1$ is a 
-# probability (where the degenerate values $p = 0$ and $p = 1$ are hopefully avoided), and 
-# $μ₁, μ₂ > 0$ are the inverse scales of exponential distributions. To avoid the risk that an 
-# iterate falls outside of its domain, bounds can be supplied using the keyword arguments `lower` 
-# and `upper`:
+# ## Simple constraints on parameters
+#
+# In the previous example, the parameters being estimated, $p, μ₁, μ₂$, have restricted domains; 
+# $1 < p < 1$ is a probability (where the degenerate values $p = 0$ and $p = 1$ are hopefully 
+# avoided), and $μ₁, μ₂ > 0$ are the inverse scales of exponential distributions. To avoid the risk 
+# that an iterate falls outside of its domain, bounds can be supplied using the keyword arguments 
+# `lower` and `upper`:
 
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa,
     lower = [0.,0.,0.], upper = [1., Inf, Inf], buffer = 0.05);
 
 # Here, the keyword argument `buffer` (= 0.05 by default for mapping applications) ensures that a 
-# parameter xᵢ will be at least at a distance 0.05 × |xᵢlast - boundᵢ| of boundᵢ, where xᵢlast is xᵢ's 
-# last value. This safeguard avoids jumping to a bound instantly (unless buffer = 0). For instance, 
-# if xᵢlast $= 0.2$, AA's next iterate is xᵢtry $= -0.1$, and lowerᵢ $= 0$, then xᵢ is set to 
-# max$($xᵢtry, buffer $×$ xᵢlast $+ (1 -$ buffer$) ×$ lowerᵢ$) =$ max$(-0.1, 0.05 × 0.2 + 0.95 × 0.) = 0.01$.
+# parameter xᵢ will be at least at a distance buffer $× |$xᵢprev $-$ boundᵢ$|$ of boundᵢ, where 
+# xᵢprev is xᵢ's previous value. This safeguard avoids jumping to a bound instantly (unless buffer 
+# $= 0$), in case boundᵢ is infeasible or is a saddle point. For instance, if xᵢprev $= 0.2$, lowerᵢ 
+# $= 0$, but AA's next iterate is xᵢtry $= -0.1$, then xᵢ is set to 
+# max$($xᵢtry, buffer $×$ xᵢprev $+ (1 -$ buffer$) ×$ lowerᵢ$) =$ max$(-0.1, 0.05 × 0.2 + 0.95 × 0) = 0.01$.
 #
 # ## Avoiding memory allocation
 #
@@ -157,9 +160,9 @@ bench_nonalloc = @benchmark speedmapping($x0s; m = x -> power_iteration(x, $As))
 times = Int.(round.(median.([bench_eigen.times, bench_alloc.times, bench_prealloc.times, bench_nonalloc.times])))/1000 .* u"μs";
 return hcat(["eigen", "Allocating", "Pre-allocated", "Non allocating"],times)
 
-# ## Working with scalars
+# ## Working with immutable types
 #
-# `m` also accepts scalars and tuples.
+# Along with `StaticArray`, `m` accepts other immutable types like scalars and `Tuple`.
 
 speedmapping(0.5; m = cos);
 speedmapping((0.5, 0.5); m = x -> (cos(x[1]), sin(x[2])));
