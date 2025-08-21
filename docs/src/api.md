@@ -130,7 +130,7 @@ speedmapping([1.,1.]; m! = (xout, xin) -> xout .=  0.9xin, algo = :aa, cache = c
   - `maps`: the number of maps, function evaluations or gradient evaluations
   - `f_calls`: The number of objective function evaluations
   - `iterations`: The number of iteration
-  - `status :: Symbol`: Should equal ``:first_order`` if a solution has been found.
+  - `status :: Symbol ∈ (:first_order, :max_iter, :max_eval, :max_time, :failure)` should be `:first_order` if a solution has been found successfully.
   - `algo ∈ (:acx, :aa)`
   - `acx_trace` A vector of `AcxState` if `algo == :acx && store_trace == true`, `nothing` otherwise.
   - `aa_trace` A vector of `AaState` if `algo == :aa && store_trace == true`, `nothing` otherwise.
