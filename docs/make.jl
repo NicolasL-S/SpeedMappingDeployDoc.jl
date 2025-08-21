@@ -32,6 +32,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/NicolasL-S/SpeedMappingDeployDoc.jl.git",
+    repo="github.com/NicolasL-S/SpeedMapping.jl.git", # Deploying on SpeedMapping directly
     devbranch="main",
 )
