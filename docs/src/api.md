@@ -32,7 +32,7 @@ speedmapping([1.,1.]; r! = (resid, x) -> resid .=  -0.1x)
 ```Julia
 speedmapping([1.,1.]; g! = (grad, x) -> grad .=  4x.^3)
 ```
-`m` and `g` are versions of `m!` and `g!` with immutable types like `Real', `StaticArray`, or `Tuple` as input and output.
+`m` and `g` are versions of `m!` and `g!` with immutable types like `Real`, `StaticArray`, or `Tuple` as input and output.
 ```Julia
 using StaticArrays
 speedmapping(1.; m = x -> 0.9x)
