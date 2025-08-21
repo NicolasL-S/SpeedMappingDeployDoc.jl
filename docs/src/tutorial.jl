@@ -113,11 +113,15 @@ res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = E
     lower = [0.,0.,0.], upper = [1., Inf, Inf], buffer = 0.05);
 
 # Here, the keyword argument `buffer` (= 0.05 by default for mapping applications) ensures that a 
-# parameter x<sub>i</sub> will be at least at a distance buffer $× |$xᵢprev $-$ boundᵢ$|$ of boundᵢ, where 
+# parameter x <sub> i </sub> will be at least at a distance buffer $× |$xᵢprev $-$ boundᵢ$|$ of boundᵢ, where 
 # xᵢprev is xᵢ's previous value. This safeguard avoids jumping to boundᵢ instantly (unless buffer 
 # $= 0$), in case boundᵢ is infeasible or is a saddle point. For instance, if xᵢprev $= 0.2$, lowerᵢ 
 # $= 0$, but AA's next iterate is xᵢtry $= -0.1$, then xᵢ is set to 
 # max$($xᵢtry, buffer $×$ xᵢprev $+ (1 -$ buffer$) ×$ lowerᵢ$) =$ max$(-0.1, 0.05 × 0.2 + 0.95 × 0) = 0.01$.
+#
+# <div title="them's hoverin' words">hover me</div>
+#
+# <span title="them's hoverin' words">hover me</span>
 #
 # ## Avoiding memory allocation
 #
