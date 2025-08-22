@@ -221,8 +221,7 @@ display(res_scalar)
 # 
 # An advantage of **ACX** is that constraints on parameters have little impact on estimation speed. 
 # They are added via the keyword arguments `lower` and `upper` (`= nothing` by default). The 
-# starting point does not need to be in the feasible domain, but, if supplied, upper / lower need
-# to have the same indices as `x0`.
+# starting point does not need to be in the feasible domain.
 
 speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!, lower = [2., -Inf]);
 speedmapping(0.; g = x -> exp(x) + 2x, upper = -1);
