@@ -20,15 +20,15 @@ Algorithms:
 ## Keyword arguments defining the problem
 One and _only one_ of the following argument should be supplied. They are all of type `FN = Union{Function, Nothing}`.
 
-`m! ::  FN  =  nothing` in-place mapping function for **MAP** with mutable arrays as input. 
+`m! :: FN = nothing` in-place mapping function for **MAP** with mutable arrays as input. 
 ```Julia
 speedmapping([1.,1.]; m! = (xout, xin) -> xout .=  0.9xin)
 ```
-`r! ::  FN  =  nothing` in-place residual function for **NLS** with mutable arrays as input. 
+`r! :: FN = nothing` in-place residual function for **NLS** with mutable arrays as input. 
 ```Julia
 speedmapping([1.,1.]; r! = (resid, x) -> resid .=  -0.1x)
 ```
-`g! ::  FN  =  nothing` in-place gradient function for **MIN** with mutable arrays as input. 
+`g! :: FN = nothing` in-place gradient function for **MIN** with mutable arrays as input. 
 ```Julia
 speedmapping([1.,1.]; g! = (grad, x) -> grad .=  4x.^3)
 ```
@@ -47,12 +47,12 @@ speedmapping((1.,1.); g = x -> (x[1] - 2, x[2]^3))
 - `:acx` can be used to solve **MAP** or **MIN** (the default for **MAP**).
 - `:aa` can be used to solve **MAP** or **NLS**. 
 
-`f ::  FN  =  nothing` computes an objective function. 
+`f :: FN = nothing` computes an objective function. 
 - For **MIN**, `f` is be used to initialize the learning rate better.
 - For **MAP** using **AA**, `f` is be used ensure monotonicity of the algorithm. 
 - For **NLS**, `f` is ignored.
 
-`lower, upper::  Union{Nothing, T}  =  nothing` define bounds on parameters which can be used with any problem.
+`lower, upper = nothing` define bounds on parameters which can be used with any problem.
 ```Julia
 speedmapping([1.,1.]; g!  =  (grad, x)  -> grad .= 4x.^3, lower = [-Inf,2.])
 ```
@@ -65,31 +65,31 @@ c = AaCache([1.,1.])
 speedmapping([1.,1.]; m! = (xout, xin) -> xout .=  0.9xin, algo = :aa, cache = c)
 ```
 
-`abstol::  AbstractFloat  =  1e-8`
+`abstol :: AbstractFloat = 1e-8`
   The absolute tolerance used as stopping criterion. 
   - For **MAP**, the algorithm stops when `‖xout - xin‖ < abstol` (from `m!(xout, xin)`)
   - For **NLS**, the algorithm stops when `‖res‖ < abstol` (from `r!(res, x)`)
   - For **MIN**, the algorithm stops when `‖gradient‖ < abstol` (from `g!(gradient, x)`)
 
-`pnorm ::  Real  =  2.`
+`pnorm :: Real = 2.`
   The norm used for the stopping criterion. Typically `1`, `2` or `Inf`.  
 
-`maps_limit :: Real  =  1_000_000_000`
+`maps_limit :: Real = 1_000_000_000`
   The number of main function evaluation (`m!`, `r!`, or `g!`) before the algorithm terminates.
 
-`iter_limit :: Real  =  1_000_000_000`  
+`iter_limit :: Real = 1_000_000_000`  
   The number of iterations before the algorithm terminates.
 
-`time_limit :: Real  =  Inf`
+`time_limit :: Real = Inf`
   The time limit before stopping (if `time_limit == Inf`, `time()` will not be called at each iteration).
 
 `reltol_resid_grow :: Real = algo == :aa ? 4. : (g! !== nothing || g !== nothing) ? 1e5 : 100.`
   `reltol_resid_grow` is a problem-specific stabilizing parameter. After a mapping/descent step/iteration, the distance between the current `x` and the previous `x` is reduced until the residual norm (`‖xout - xin‖`, `‖res‖`, or `‖grad‖`) does not increase more than a by a factor `reltol_resid_grow`. It is set to 4 for **AA** because this algorithm is more sensitive to low-quality iterations and because **NLS** may involve highly divergent functions. For **ACX** it is set to 100 for **MAP**, and for 1e5 for **MIN**.
 
-`buffer::  AbstractFloat  = (m! !==  nothing  || m !==  nothing) ?  0.05  :  0.`
+`buffer :: AbstractFloat  = (m! !==  nothing  || m !==  nothing) ?  0.05  :  0.`
   `buffer`is used in conjunction with `lower` or `upper`. If an iterate `x` lands outside a constraint, `buffer` leaves some distance between `x` and the constraint. It is set by default to `0.05` for **MAP** because constraints may be used to avoid landing immediately on bad values like saddle points at which the algorithm would stall. 
 
-`store_trace ::  Bool = false`
+`store_trace :: Bool = false`
   To store information on each iteration of the solving process. The trace depends on the algorithm. For a SpeedMapping result `res`, the trace is 
   - `res.acx_trace` for **ACX**;
   - `res.aa_trace` for **AA**.

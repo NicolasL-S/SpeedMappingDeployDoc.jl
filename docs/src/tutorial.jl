@@ -109,7 +109,7 @@ display(res_with_objective)
 # `lower` and `upper`:
 
 res_with_objective = speedmapping([0.25, 1., 2.]; f = neg_log_likelihood, m! = EM_map!, algo = :aa,
-    lower = [0.,0.,0.], upper = [1., Inf, Inf], buffer = 0.05);
+    lower = [0, 0, 0], upper = [1., Inf, Inf], buffer = 0.05);
 
 # Here, the keyword argument `buffer` (= 0.05 by default for mapping applications) ensures that a 
 # parameter xᵢ will be at least at a distance buffer $× |$xᵢprev $-$ boundᵢ$|$ of boundᵢ, where 
@@ -221,8 +221,8 @@ display(res_scalar)
 # 
 # An advantage of **ACX** is that constraints on parameters have little impact on estimation speed. 
 # They are added via the keyword arguments `lower` and `upper` (`= nothing` by default). The 
-# starting point does not need to be in the feasible domain, but, if supplied, _upper / lower need
-# to be of type `x0`_.
+# starting point does not need to be in the feasible domain, but, if supplied, upper / lower need
+# to have the same indices as `x0`.
 
-speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!, lower = [2, -Inf]);
-speedmapping(0.; g = x -> exp(x) + 2x, upper = -1.);
+speedmapping([-1.2, 1.]; f = f_Rosenbrock, g! = g_Rosenbrock!, lower = [2., -Inf]);
+speedmapping(0.; g = x -> exp(x) + 2x, upper = -1);
