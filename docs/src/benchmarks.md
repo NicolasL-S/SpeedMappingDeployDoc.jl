@@ -17,13 +17,13 @@ For mapping applications, **AA** has various options available:
 - For mapping applications with objective function available, monotonicity (with tolerance for objective deterioration) can also be imposed or not.
 totalling 2 × 3 × 2 = 12 possible specifications. For **ACX**, the default options are used.
 
-Julia has two other commonly used packages for fixed-point acceleration: `FixedPoint` and `FixedPointAcceleration` (with algorithms `SEA`, `VEA`, `MPE`, `RRE` and `Anderson`).
+For comparison, two other notable Julia packages for fixed-point acceleration are `FixedPoint` and `FixedPointAcceleration` (with algorithms `SEA`, `VEA`, `MPE`, `RRE` and `Anderson`).
 
-The benchmarks are based on 15 problems from physics, statistics, genetics and social sciences from the FixedPointTestProblems library.
+The benchmarks are based on 15 problems from physics, statistics, genetics and social sciences from the [FixedPointTestProblems](https://github.com/NicolasL-S/FixedPointTestProblems.jl) library.
 
 ![Mapping results](https://raw.githubusercontent.com/NicolasL-S/SpeedMapping.jl/refs/heads/main/docs/assets/mapping_benchmarks.svg)
 
-Marker indicates how much longer each algorithm took relative to the fastest algorithm for each problem. The color scale shows the same for the number of maps. The left-most algorithms are the most reliable and the quickest. 
+Marker indicates how much longer each algorithm took relative to the fastest algorithm for each problem. The color scale shows the same for the number of maps. The most reliable and quickest algorithms are presented first. 
 
 **ACX** and monotonic **AA** perform well (non-monotonic **AA** did not converge for the Lange, ancestry problem). While **AA** tends to need fewer iterations, **ACX** is lighter and tends to be quicker for small-scale problems. Composite **AA** is also surprisingly fast, with `:aa1` having a slight edge on `:acx2`. With few exceptions, adaptative relaxation is also advantageous, especially for large scale problems like Bratu, the Poisson equation (electric field) and the lid-driven cavity flow.
 
@@ -33,7 +33,7 @@ SciML has already [benchmarked nonlinear solvers](https://docs.sciml.ai/SciMLBen
 
 ![Problems](https://raw.githubusercontent.com/NicolasL-S/SpeedMapping.jl/refs/heads/main/docs/assets/nonlinear_benchmarks.svg)
 
-Each marker's height shows how much longer each algorithm took relative to the fastest for each problem. The color scale shows the same for the number of iterations.SpeedMapping's **AA** and NonlinearSolve's Newton Raphston and Polyalgorithm are generally reliable and fast.  NLSolve trust_region and newton are also surprisingly fast, despite their higher number of function evaluations. A caveat to these tests is that all problems have 10 variables or less. Adding lager-scale problems with various sparsity patterns would paint a more complete picture.
+Markers show computation time for each algorithm relative to the fastest algorithm for each problem. The color scale shows the same for the number of iterations. The most reliable and quickest algorithms are shown at the top. SpeedMapping's **AA** and NonlinearSolve's Newton Raphston and Polyalgorithm are generally reliable and fast. NLSolve trust_region and newton are also surprisingly fast, despite their higher number of function evaluations. A caveat to these tests is that all problems have 10 variables or less. Adding lager-scale problems with various sparsity patterns would paint a more complete picture.
 
 ## Minimizing a function
 
