@@ -18,27 +18,27 @@ Algorithms:
 - For **AA**: `x0` should be a mutable `AbstractArray{AbstractFloat}`.
 
 ## Keyword arguments defining the problem
-One and _only one_ of the following argument should be supplied. They are all of type `FN = Union{Function, Nothing}`.
+One and _only one_ of the following argument should be supplied.
 
-`m! :: FN = nothing` in-place mapping function for **MAP** with mutable arrays as input. 
+`m! = nothing` in-place mapping function for **MAP** with mutable arrays as input. 
 ```Julia
-speedmapping([1.,1.]; m! = (xout, xin) -> xout .= 0.9xin)
+speedmapping([1., 1.]; m! = (xout, xin) -> xout .= 0.9xin)
 ```
-`r! :: FN = nothing` in-place residual function for **NLS** with mutable arrays as input. 
+`r! = nothing` in-place residual function for **NLS** with mutable arrays as input. 
 ```Julia
-speedmapping([1.,1.]; r! = (resid, x) -> resid .= -0.1x)
+speedmapping([1., 1.]; r! = (resid, x) -> resid .= -0.1x)
 ```
-`g! :: FN = nothing` in-place gradient function for **MIN** with mutable arrays as input. 
+`g! = nothing` in-place gradient function for **MIN** with mutable arrays as input. 
 ```Julia
-speedmapping([1.,1.]; g! = (grad, x) -> grad .= 4x.^3)
+speedmapping([1., 1.]; g! = (grad, x) -> grad .= 4x.^3)
 ```
 `m` and `g` are versions of `m!` and `g!` with immutable types like `Real`, `StaticArray`, or `Tuple` as input and output.
 ```Julia
 using StaticArrays
 speedmapping(1.; m = x -> 0.9x)
-speedmapping(SA[1.,1.]; m = x -> 0.9x)
+speedmapping(SA[1., 1.]; m = x -> 0.9x)
 speedmapping(1.; g = x -> 4x^3)
-speedmapping((1.,1.); g = x -> (x[1] - 2, x[2]^3))
+speedmapping((1., 1.); g = x -> (x[1] - 2, x[2]^3))
 
 ```
 ## Other important keyword arguments
@@ -47,14 +47,14 @@ speedmapping((1.,1.); g = x -> (x[1] - 2, x[2]^3))
 - `:acx` can be used to solve **MAP** or **MIN** (the default for **MAP**).
 - `:aa` can be used to solve **MAP** or **NLS**. 
 
-`f :: FN = nothing` computes an objective function. 
+`f = nothing` computes an objective function. 
 - For **MIN**, `f` is be used to initialize the learning rate better.
 - For **MAP** using **AA**, `f` is be used ensure monotonicity of the algorithm. 
 - For **NLS**, `f` is ignored.
 
 `lower, upper = nothing` define bounds on parameters which can be used with any problem.
 ```Julia
-speedmapping([1.,1.]; g! = (grad, x) -> grad .= 4x.^3, lower = [-Inf,2.])
+speedmapping([1., 1.]; g! = (grad, x) -> grad .= 4x.^3, lower = [-Inf, 2.])
 ```
 ## Other keyword arguments
 ### Affecting both **ACX** and **AA**
@@ -62,7 +62,7 @@ speedmapping([1.,1.]; g! = (grad, x) -> grad .= 4x.^3, lower = [-Inf,2.])
   pre-allocates memory for **ACX** or **AA** with mutable input
 ```Julia
 c = AaCache([1., 1.])
-speedmapping([1.,1.]; m! = (xout, xin) -> xout .= 0.9xin, algo = :aa, cache = c)
+speedmapping([1., 1.]; m! = (xout, xin) -> xout .= 0.9xin, algo = :aa, cache = c)
 ```
 
 `abstol :: AbstractFloat = 1e-8`
@@ -95,8 +95,8 @@ speedmapping([1.,1.]; m! = (xout, xin) -> xout .= 0.9xin, algo = :aa, cache = c)
   - `res.aa_trace` for **AA**.
 
 ### Affecting only **ACX**
-`orders = (2,3,3)`
-  The extrapolation orders. (2,3,3) is extremely reliable, but others like (2,3), or (2,) could be considered.
+`orders = (2, 3, 3)`
+  The extrapolation orders. (2, 3, 3) is extremely reliable, but others like (2, 3), or (2,) could be considered.
 
 `initial_learning_rate :: Real = 1.`
   The initial learning rate used for **MIN**. If `initialize_learning_rate == true`, it is the starting point for the initialization.
